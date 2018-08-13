@@ -1,4 +1,7 @@
 package com.paypal.bootcamp;
 
-public class Card {
+public abstract class Card implements Comparable<Card>{
+    private Suit suit;
+    private Pip pip;
+
 }
