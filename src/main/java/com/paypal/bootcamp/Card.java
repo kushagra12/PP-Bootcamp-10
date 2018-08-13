@@ -1,6 +1,6 @@
 package com.paypal.bootcamp;
 
-public abstract class Card{
+public class Card{
     Suit suit;
     Pip pip;
 
@@ -28,6 +28,4 @@ public abstract class Card{
     public boolean equals(Card card) {
         return card.pip == this.pip && card.suit == this.suit;
     }
-
-    public abstract int getValue();
 }
