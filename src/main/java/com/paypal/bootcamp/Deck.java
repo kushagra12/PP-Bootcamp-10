@@ -1,16 +1,24 @@
 package com.paypal.bootcamp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Deck {
+public class Deck<T extends Card>{
 
-    List<Card> cards;
+    List<T> cards;
 
-    Deck (Integer numberPacks, boolean withJokers) {
+    public Deck(final DeckSpecification<T> deckSpecification) {
+        cards = new ArrayList<T>();
+        for (int i = 0; i < deckSpecification.noOfPacks(); i++) {
+            Pack<T> pack = new Pack<T>(deckSpecification.getJokerValue() > 1) {
+                @Override
+                public T generate(Suit s, Pip p) {
+                    return deckSpecification.generate(s, p);
+                }
+            };
 
-        for (int i = 0; i < numberPacks; i++) {
-            cards.addAll(new Pack(withJokers).getCards());
+            cards.addAll(pack.getCards());
         }
 
     }
@@ -19,12 +27,12 @@ public class Deck {
         Collections.shuffle(this.cards);
     }
 
-    public List<Card> getNCards (Integer n) {
+    public List<T> getNCards (Integer n) {
         if ( n > cards.size())
             n = cards.size()-1;
 
-        List<Card> nCards =  cards.subList(0, n);
-        cards.removeAll(nCards);
+        List<T> nCards =  cards.subList(0, n);
+        cards = cards.subList(n, cards.size());
         return nCards;
 
     }

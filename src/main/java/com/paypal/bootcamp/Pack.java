@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Pack{
+public abstract class Pack <C extends Card>{
 
-    List<Card> cards;
-
-    public boolean isJoker (Pip p, Suit s){
-        return p.equals(Pip.JOKER) || s.equals(Suit.JOKER);
-    }
+    List<C> cards;
 
     public Pack(boolean containsJoker){
-        cards = new ArrayList<Card>();
-        for (Pip p : Pip.values()){
-            for (Suit s : Suit.values()){
-                if (!isJoker(p, s)){
-                    cards.add(new Card(s, p));
-                }
+        cards = new ArrayList<C>();
+        for (Pip p : Pip.values()) {
+            for (Suit s : Suit.values()) {
+                C card = generate(s, p);
+                if (!card.isJoker())
+                    cards.add(card);
             }
         }
         if (containsJoker) {
-            cards.add(new Card(Suit.JOKER, Pip.JOKER));
-            cards.add(new Card(Suit.JOKER, Pip.JOKER));
+            cards.add(generate(Suit.JOKER, Pip.JOKER));
+            cards.add(generate(Suit.JOKER, Pip.JOKER));
         }
+    }
+
+    public abstract C generate(Suit s, Pip p);
+
+    public List<C> getCards() {
+        return cards;
     }
 }
